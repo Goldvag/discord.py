@@ -2062,7 +2062,7 @@ class Client:
         yield from self.http.move_channel_position(channel.server.id, payload)
 
     @asyncio.coroutine
-    def create_channel(self, server, name, *overwrites, type=None,parent=None):
+    def create_channel(self, server, name, *overwrites, type=None, topic=None, parent=None):
         """|coro|
 
         Creates a :class:`Channel` in the specified :class:`Server`.
@@ -2115,7 +2115,9 @@ class Client:
             An argument list of channel specific overwrites to apply on the channel on
             creation. Useful for creating 'secret' channels.
         parent: str
-            The parent channel's id. Used to create channels under categories. 
+            The parent channel's id. Used to create channels under categories.
+        topic: str
+            The topic of the channel.
 
         Raises
         -------
@@ -2161,7 +2163,7 @@ class Client:
 
             perms.append(payload)
 
-        data = yield from self.http.create_channel(server.id, name, str(type),parent_id=parent, permission_overwrites=perms)
+        data = yield from self.http.create_channel(server.id, name, str(type), topic=topic, parent_id=parent, permission_overwrites=perms)
         channel = Channel(server=server, **data)
         return channel
 
